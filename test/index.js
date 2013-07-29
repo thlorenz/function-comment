@@ -13,5 +13,6 @@ function check(t, fixture, lineno, comment) {
 
 test('\nnone line comment(s) right above function', function (t) {
   check(t, 'one-line-comment-single', 7, '// this is the comment to find');
+//  check(t, 'one-line-comment-multi', 8, '');
   t.end()
 })

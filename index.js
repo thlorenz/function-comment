@@ -2,6 +2,13 @@
 
 var parse = require('esprima').parse;
 
+function indexCommentsByStartLine (comments) {
+  return comments.reduce(function (acc, c) {
+    acc[c.loc.start.line] = c;
+    return acc;
+  }, {})
+}
+
 function commentEndLine (lines, lineno) {
   return lineno - 1;
 }
@@ -20,19 +27,13 @@ var go = module.exports = function (src, lineno) {
   var lines    =  src.split('\n');
   var endline  =  commentEndLine(lines, lineno);
 
-  var commentLines;
-  var hasComment = ast.comments.some(function (c) {
-      var el = c.loc.end.line;
-      if (el === endline) {
-        var sl = c.loc.start.line;
-        commentLines = { start: sl, end: el };
-        return true;
-      }
-    })
+  var indexedComments = indexCommentsByStartLine(ast.comments);
 
-  return hasComment
+  var comment = indexedComments[endline];
+
+  return comment
     ? lines
-      .slice(commentLines.start - 1, commentLines.end)
+      .slice(comment.loc.start.line - 1, comment.loc.end.line)
       .join('\n')
     : '';
 };
@@ -44,5 +45,12 @@ if (!module.parent) {
   var src = fs.readFileSync(__dirname + '/test/fixtures/one-line-comment-single.js', 'utf8');
   var lineno = 7;
 
-  go(src, lineno)
+  var ast      =  parse(src, { comment: true, range: true, loc: true });
+  var lines    =  src.split('\n');
+  var endline  =  commentEndLine(lines, lineno);
+
+  var indexedComments = indexCommentsByStartLine(ast.comments);
+
+  var comment = indexedComments[endline];
+
 }
