@@ -37,8 +37,12 @@ var go = module.exports = function (src, lineno) {
     : '';
 };
 
-var fs = require('fs');
-var src = fs.readFileSync(__dirname + '/test/fixtures/one-line-comment.js', 'utf8');
-var lineno = 7;
+// Test
+if (!module.parent) {
 
-go(src, lineno)
+  var fs = require('fs');
+  var src = fs.readFileSync(__dirname + '/test/fixtures/one-line-comment-single.js', 'utf8');
+  var lineno = 7;
+
+  go(src, lineno)
+}
