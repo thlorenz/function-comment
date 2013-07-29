@@ -9,6 +9,35 @@ function indexCommentsByStartLine (comments) {
   }, {})
 }
 
+function indexCommentsByEndLine (comments) {
+  return comments.reduce(function (acc, c) {
+    acc[c.loc.end.line] = c;
+    return acc;
+  }, {})
+}
+
+function grabEntireComment (comment, lines, startlineIndexedComments) {
+  // only called for single line comments
+  var endline = comment.loc.end.line;
+  var startline = endline;
+
+  if (comment.type === 'Line') {
+    for (; startline > 0; startline--) {
+      // accept other single line comments
+      if (startlineIndexedComments[startline] && startlineIndexedComments[startline].type === 'Line') continue;
+      // or empty lines
+      if (!lines[startline].trim().length) continue;
+
+      // if we see anything else, we are done
+      break;
+    }
+  }
+
+  return lines
+    .slice(startline, endline)
+    .join('\n')
+}
+
 function commentEndLine (lines, lineno) {
   return lineno - 1;
 }
@@ -27,30 +56,21 @@ var go = module.exports = function (src, lineno) {
   var lines    =  src.split('\n');
   var endline  =  commentEndLine(lines, lineno);
 
-  var indexedComments = indexCommentsByStartLine(ast.comments);
+  var startlineIndexedComments = indexCommentsByStartLine(ast.comments);
+  var endlineIndexedComments = indexCommentsByEndLine(ast.comments);
 
-  var comment = indexedComments[endline];
+  var comment = endlineIndexedComments[endline];
 
-  return comment
-    ? lines
-      .slice(comment.loc.start.line - 1, comment.loc.end.line)
-      .join('\n')
-    : '';
+  return comment ? grabEntireComment(comment, lines, startlineIndexedComments) : '';
 };
 
 // Test
 if (!module.parent) {
 
   var fs = require('fs');
-  var src = fs.readFileSync(__dirname + '/test/fixtures/one-line-comment-single.js', 'utf8');
-  var lineno = 7;
+  var src = fs.readFileSync(__dirname + '/test/fixtures/one-line-comment-multi.js', 'utf8');
+  var lineno = 8;
 
-  var ast      =  parse(src, { comment: true, range: true, loc: true });
-  var lines    =  src.split('\n');
-  var endline  =  commentEndLine(lines, lineno);
-
-  var indexedComments = indexCommentsByStartLine(ast.comments);
-
-  var comment = indexedComments[endline];
+  go(src, lineno)
 
 }
