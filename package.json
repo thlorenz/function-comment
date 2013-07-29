@@ -15,7 +15,9 @@
     "url": "git://github.com/thlorenz/function-comment.git"
   },
   "homepage": "https://github.com/thlorenz/function-comment",
-  "dependencies": {},
+  "dependencies": {
+    "esprima": "~1.0.3"
+  },
   "devDependencies": {
     "nave": "~0.4.3",
     "tape": "~1.0.4",
