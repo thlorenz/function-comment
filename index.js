@@ -2,6 +2,10 @@
 
 var parse = require('esprima').parse;
 
+function isEmpty (s) {
+  return (/^ *$/).test(s);
+}
+
 function indexCommentsByStartLine (comments) {
   return comments.reduce(function (acc, c) {
     acc[c.loc.start.line] = c;
@@ -22,24 +26,30 @@ function grabEntireComment (comment, lines, startlineIndexedComments) {
   var startline = endline;
 
   if (comment.type === 'Line') {
-    for (; startline > 0; startline--) {
+    for (var peek = startline - 1; peek > 0; peek--) {
       // accept other single line comments
-      if (startlineIndexedComments[startline] && startlineIndexedComments[startline].type === 'Line') continue;
-      // or empty lines
-      if (!lines[startline].trim().length) continue;
+      if (startlineIndexedComments[peek] && startlineIndexedComments[peek].type === 'Line') {
+        startline = peek;
+        continue;
+      }
+
+      // pass through empty lines
+      if (isEmpty(lines[peek])) continue;
 
       // if we see anything else, we are done
       break;
     }
   }
 
-  return lines
-    .slice(startline, endline)
-    .join('\n')
+  return lines.slice(startline, endline + 1).join('\n')
 }
 
 function commentEndLine (lines, lineno) {
-  return lineno - 1;
+  var endline = lineno - 1;
+  for (; endline > 0; endline--) {
+    if (!isEmpty(lines[endline])) return endline;
+  }
+  return 0;
 }
 
 /**
@@ -53,8 +63,12 @@ function commentEndLine (lines, lineno) {
 var go = module.exports = function (src, lineno) {
 
   var ast      =  parse(src, { comment: true, range: true, loc: true });
-  var lines    =  src.split('\n');
+  // add empty line on on top as simple to make actual lines 1 based
+  var lines    =  [ '' ].concat(src.split('\n'));
   var endline  =  commentEndLine(lines, lineno);
+
+  // no comment related to the function found?
+  if (endline < 1) return '';
 
   var startlineIndexedComments = indexCommentsByStartLine(ast.comments);
   var endlineIndexedComments = indexCommentsByEndLine(ast.comments);
@@ -68,9 +82,10 @@ var go = module.exports = function (src, lineno) {
 if (!module.parent) {
 
   var fs = require('fs');
-  var src = fs.readFileSync(__dirname + '/test/fixtures/one-line-comment-multi.js', 'utf8');
-  var lineno = 8;
+  var src = fs.readFileSync(__dirname + '/test/fixtures/line-comment-scattered.js', 'utf8');
+  var lineno = 12;
 
+  var ast      =  parse(src, { comment: true, range: true, loc: true });
   go(src, lineno)
 
 }
