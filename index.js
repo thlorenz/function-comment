@@ -57,6 +57,7 @@ function commentEndLine (lines, lineno) {
  * @function
  * @param src {String} the JavaScript source
  * @param lineno {Number} the number where the function is located (1 based)
+ * @return {String} comment or empty if none was found
  */
 var go = module.exports = function (src, lineno) {
 

@@ -60,6 +60,7 @@ fs.readFile(__filename, 'utf8', function (err, src) {
  * @function
  * @param src {String} the JavaScript source
  * @param lineno {Number} the number where the function is located (1 based)
+ * @return {String} comment or empty if none was found
  */
  ```
 
