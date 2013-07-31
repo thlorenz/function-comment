@@ -9,21 +9,19 @@ function check(t, fixture, src, lineno, comment) {
   if (Array.isArray(comment)) comment = comment.join('\n');
 
   var res = fncomment(src, lineno);
-  console.error(res.split('\n'));
+  // console.error(res.split('\n'));
   t.equal(res, comment, fixture)
 }
 
 test('\nline comment(s) right above function', function (t) {
-  var src;
 
-  src = fs.readFileSync(__dirname + '/fixtures/line-comment-single.js', 'utf8');
+  var src = fs.readFileSync(__dirname + '/fixtures/line-comment-single.js', 'utf8');
   check(t, 'line-comment-single', src , 7, '// this is the comment to find');
 
-  src = fs.readFileSync(__dirname + '/fixtures/line-comment-multi.js', 'utf8');
   check(
       t
     , 'line-comment-multi'
-    , src
+    ,  fs.readFileSync(__dirname + '/fixtures/line-comment-multi.js', 'utf8')
     , 8
     , [ '// this is the comment to find',
         '// needs to find this line as well',
@@ -33,16 +31,14 @@ test('\nline comment(s) right above function', function (t) {
 })
 
 test('\nline comment(s) above function with empty lines in between', function (t) {
-  var src;
 
-  src = fs.readFileSync(__dirname + '/fixtures/line-comment-empty-lines-single.js', 'utf8');
+  var src = fs.readFileSync(__dirname + '/fixtures/line-comment-empty-lines-single.js', 'utf8');
   check(t, 'line-comment-empty-lines-single', src, 9, '// this is the comment to find');
 
-  src = fs.readFileSync(__dirname + '/fixtures/line-comment-empty-lines-multi.js', 'utf8');
   check(
       t
     , 'line-comment-empty-lines-multi'
-    , src
+    , fs.readFileSync(__dirname + '/fixtures/line-comment-empty-lines-multi.js', 'utf8')
     , 9
     , [ '// this is the comment to find',
         '// needs to find this line as well',
@@ -65,16 +61,14 @@ test('\nline comment(s) above function with empty lines in between', function (t
 })
 
 test('\nblock comment(s) right above function', function (t) {
-  var src;
 
-  src = fs.readFileSync(__dirname + '/fixtures/block-comment-single.js', 'utf8');
+  var src = fs.readFileSync(__dirname + '/fixtures/block-comment-single.js', 'utf8');
   check(t, 'block-comment-single', src , 7, '/* this is the comment to find */');
 
-  src = fs.readFileSync(__dirname + '/fixtures/block-comment-multi.js', 'utf8');
   check(
       t
     , 'block-comment-multi'
-    , src 
+    , fs.readFileSync(__dirname + '/fixtures/block-comment-multi.js', 'utf8')
     , 13
     , [ '/* this is the comment to find */',
         '/* and this */',
@@ -90,13 +84,11 @@ test('\nblock comment(s) right above function', function (t) {
 })
 
 test('\nblock comment(s) above function with empty lines in between', function (t) {
-  var src;
 
-  src = fs.readFileSync(__dirname + '/fixtures/block-comment-empty-lines-single.js', 'utf8');
   check(
       t
     , 'block-comment-empty-lines-single'
-    , src 
+    , fs.readFileSync(__dirname + '/fixtures/block-comment-empty-lines-single.js', 'utf8')
     , 14
     , [ '/**',
       ' * jdoc for this function with a few empty lines in between',
@@ -105,11 +97,10 @@ test('\nblock comment(s) above function with empty lines in between', function (
       ' */' ]  
   );
 
-  src = fs.readFileSync(__dirname + '/fixtures/block-comment-scattered.js', 'utf8');
   check(
       t
     , 'block-comment-scattered'
-    , src
+    , fs.readFileSync(__dirname + '/fixtures/block-comment-scattered.js', 'utf8')
     , 12
     , [ '/* this is the comment to find */',
         '',
