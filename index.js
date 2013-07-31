@@ -23,22 +23,20 @@ function indexCommentsByEndLine (comments) {
 function grabEntireComment (comment, lines, startlineIndexedComments) {
   // only called for single line comments
   var endline = comment.loc.end.line;
-  var startline = endline;
+  var startline = comment.loc.start.line;
 
-  if (comment.type === 'Line') {
-    for (var peek = startline - 1; peek > 0; peek--) {
-      // accept other single line comments
-      if (startlineIndexedComments[peek] && startlineIndexedComments[peek].type === 'Line') {
-        startline = peek;
-        continue;
-      }
-
-      // pass through empty lines
-      if (isEmpty(lines[peek])) continue;
-
-      // if we see anything else, we are done
-      break;
+  for (var peek = startline - 1; peek > 0; peek--) {
+    // accept other single line comments
+    if (startlineIndexedComments[peek]) {
+      startline = peek;
+      continue;
     }
+
+    // pass through empty lines
+    if (isEmpty(lines[peek])) continue;
+
+    // if we see anything else, we are done
+    break;
   }
 
   return lines.slice(startline, endline + 1).join('\n')
@@ -82,10 +80,10 @@ var go = module.exports = function (src, lineno) {
 if (!module.parent) {
 
   var fs = require('fs');
-  var src = fs.readFileSync(__dirname + '/test/fixtures/line-comment-scattered.js', 'utf8');
-  var lineno = 12;
+  var src = fs.readFileSync(__dirname + '/test/fixtures/block-comment-multi.js', 'utf8');
+  var lineno = 13;
 
-  var ast      =  parse(src, { comment: true, range: true, loc: true });
+  var ast  =  parse(src, { comment: true, range: true, loc: true });
   go(src, lineno)
 
 }
