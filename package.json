@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "description": "Given some JavaScript and the line on which a function is defined it returns comments and jsdocs found right above that function.",
   "main": "index.js",
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
+  },
   "scripts": {
     "test-main": "tap test/*.js",
     "test-0.8": "nave use 0.8 npm run test-main",
@@ -21,7 +26,8 @@
   "devDependencies": {
     "nave": "~0.4.3",
     "tape": "~1.0.4",
-    "tap": "~0.4.3"
+    "tap": "~0.4.3",
+    "brfs": "0.0.6"
   },
   "keywords": [],
   "author": {
