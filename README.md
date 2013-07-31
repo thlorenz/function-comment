@@ -51,6 +51,8 @@ fs.readFile(__filename, 'utf8', function (err, src) {
 ## API
 
 ### *findex (src, lineno)*
+
+```
 /**
  * Finds any concecutive comment above the given line of code in the source.
  *
@@ -59,6 +61,7 @@ fs.readFile(__filename, 'utf8', function (err, src) {
  * @param src {String} the JavaScript source
  * @param lineno {Number} the number where the function is located (1 based)
  */
+ ```
 
 ## License
 
