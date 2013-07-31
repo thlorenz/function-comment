@@ -1,23 +1,64 @@
-# function-comment
-[![build status](https://secure.travis-ci.org/thlorenz/function-comment.png)](http://travis-ci.org/thlorenz/function-comment)
+# function-comment [![build status](https://secure.travis-ci.org/thlorenz/function-comment.png)](http://travis-ci.org/thlorenz/function-comment)
 
 [![testling badge](https://ci.testling.com/thlorenz/function-comment.png)](https://ci.testling.com/thlorenz/function-comment)
 
 Given some JavaScript and the line on which a function is defined it returns comments and jsdocs found right above that function.
 
 ```js
-// TODO
+var findex = require('findex');
+var fs = require('fs');
+
+/**
+ * Adds c to d and then multiplies the result with d.
+ * 
+ * @name doingStuff
+ * @function
+ * @param c {Number}
+ * @param d {Number}
+ * @return {Number} overall result
+ */
+function doingStuff (c, d) {
+  return (c + d) * d
+}
+
+// the function whose comment we are trying to find is on line 13
+var lineno = 13; 
+
+fs.readFile(__filename, 'utf8', function (err, src) {
+  if (err) return console.error(err);
+  
+  var comment = findex(src, lineno);
+  console.log(comment);
+});
 ```
 
-## Status
-
-Nix, Nada, Nichevo, Nothing --> go away!
+**Output:**
+```
+**
+ * Adds c to d and then multiplies the result with d.
+ *
+ * @name doingStuff
+ * @function
+ * @param c {Number}
+ * @param d {Number}
+ * @return {Number} overall result
+ */
+```
 ## Installation
 
     npm install function-comment
 
 ## API
 
+### *findex (src, lineno)*
+/**
+ * Finds any concecutive comment above the given line of code in the source.
+ *
+ * @name exports
+ * @function
+ * @param src {String} the JavaScript source
+ * @param lineno {Number} the number where the function is located (1 based)
+ */
 
 ## License
 
