@@ -9,7 +9,6 @@ function check(t, fixture, src, lineno, comment) {
   if (Array.isArray(comment)) comment = comment.join('\n');
 
   var res = fncomment(src, lineno);
-  // console.error(res.split('\n'));
   t.equal(res, comment, fixture)
 }
 
@@ -45,11 +44,10 @@ test('\nline comment(s) above function with empty lines in between', function (t
         '// and this one' ]
   );
 
-  src = fs.readFileSync(__dirname + '/fixtures/line-comment-scattered.js', 'utf8');
   check(
       t
     , 'line-comment-scattered'
-    , src
+    , fs.readFileSync(__dirname + '/fixtures/line-comment-scattered.js', 'utf8')
     , 12
     , [ '// this is the comment to find',
         '',
@@ -107,6 +105,29 @@ test('\nblock comment(s) above function with empty lines in between', function (
         '/* needs to find this line as well */',
         '/*',
         ' * and this one */' ]
+  );
+  t.end()
+})
+
+test('\nmixed and scattered comments', function (t) {
+  
+  check(
+      t
+    , 'mixed-comments-scattered'
+    , fs.readFileSync(__dirname + '/fixtures/mixed-comments-scattered.js', 'utf8')
+    , 20 
+    , [ '// this is the comment to find',
+        '',
+        '// needs to find this line as well',
+        '//',
+        '// and this one',
+        '',
+        '/**',
+        ' * And this jsdoc',
+        ' * ',
+        ' * @name withcomment',
+        ' * @function',
+        ' */' ]
   );
   t.end()
 })
