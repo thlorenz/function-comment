@@ -31,7 +31,7 @@
     "brfs": "0.0.6",
     "testling": "~1.5.1"
   },
-  "keywords": [],
+  "keywords": [ "find", "parse", "function", "comment", "jsdoc", "doc", "AST" ],
   "author": {
     "name": "Thorsten Lorenz",
     "email": "thlorenz@gmx.de",
