@@ -131,3 +131,14 @@ test('\nmixed and scattered comments', function (t) {
   );
   t.end()
 })
+
+test('\nfix parse error on script level return', function (t) {
+  check(
+      t
+    , 'fix-parse-error-script-level-return'
+    , fs.readFileSync(__dirname + '/fixtures/fix-parse-error-script-level-return.js', 'utf8')
+    , 3
+    , [ '// comment to find' ]
+  );
+  t.end();
+})

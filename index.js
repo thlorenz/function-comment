@@ -60,6 +60,13 @@ function commentEndLine (lines, lineno) {
  * @return {String} comment or empty if none was found
  */
 var go = module.exports = function (src, lineno) {
+  // make source parse proof, i.e. esprima blows up on script level return
+  // simply wrapping code in a function fixes most of those problems ;)
+  src = 'function _() {\n' + src + '\n}';
+  
+  // since we added a line at the top we need to adjust the lineno
+  lineno++;
+
 
   var ast      =  parse(src, { comment: true, range: true, loc: true });
   // add empty line on on top as simple to make actual lines 1 based
