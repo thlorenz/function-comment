@@ -34,7 +34,7 @@ fs.readFile(__filename, 'utf8', function (err, src) {
 
 **Output:**
 ```
-**
+/**
  * Adds c to d and then multiplies the result with d.
  *
  * @name doingStuff
