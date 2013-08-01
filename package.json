@@ -1,6 +1,6 @@
 {
   "name": "function-comment",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Given some JavaScript and the line on which a function is defined it returns comments and jsdocs found right above that function.",
   "main": "index.js",
   "browserify": {
