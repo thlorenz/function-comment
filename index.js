@@ -39,7 +39,7 @@ function grabEntireComment (comment, lines, startlineIndexedComments) {
     break;
   }
 
-  return lines.slice(startline, endline + 1).join('\n')
+  return { startline: startline, endline: endline, comment: lines.slice(startline, endline + 1).join('\n') };
 }
 
 function commentEndLine (lines, lineno) {
@@ -57,7 +57,11 @@ function commentEndLine (lines, lineno) {
  * @function
  * @param src {String} the JavaScript source
  * @param lineno {Number} the number where the function is located (1 based)
- * @return {String} comment or empty if none was found
+ * @return {Object} { 
+ *    comment   :  comment string or empty if none was found
+ *    startline :  line on which the comment starts or 0 if no comment was found
+ *    endline   :  line on which the comment ends or 0 if no comment was found
+ *  }
  */
 var go = module.exports = function (src, lineno) {
   // make source parse proof, i.e. esprima blows up on script level return
@@ -81,7 +85,9 @@ var go = module.exports = function (src, lineno) {
 
   var comment = endlineIndexedComments[endline];
 
-  return comment ? grabEntireComment(comment, lines, startlineIndexedComments) : '';
+  return comment 
+    ? grabEntireComment(comment, lines, startlineIndexedComments) 
+    : { comment: '', startline: 0, endline: 0 };
 };
 
 // Test

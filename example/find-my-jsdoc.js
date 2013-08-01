@@ -20,6 +20,8 @@ var lineno = 13;
 fs.readFile(__filename, 'utf8', function (err, src) {
   if (err) return console.error(err);
   
-  var comment = findex(src, lineno);
-  console.log(comment);
+  var res = findex(src, lineno);
+  console.log(res.comment);
+  console.log('start: ', res.startline);
+  console.log('end:   ', res.endline);
 });

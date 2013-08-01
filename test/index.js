@@ -9,7 +9,7 @@ function check(t, fixture, src, lineno, comment) {
   if (Array.isArray(comment)) comment = comment.join('\n');
 
   var res = fncomment(src, lineno);
-  t.equal(res, comment, fixture)
+  t.equal(res.comment, comment, fixture)
 }
 
 test('\nline comment(s) right above function', function (t) {

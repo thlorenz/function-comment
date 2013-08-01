@@ -27,8 +27,10 @@ var lineno = 13;
 fs.readFile(__filename, 'utf8', function (err, src) {
   if (err) return console.error(err);
   
-  var comment = findex(src, lineno);
-  console.log(comment);
+  var res = findex(src, lineno);
+  console.log(res.comment);
+  console.log('start: ', res.startline);
+  console.log('end:   ', res.endline);
 });
 ```
 
@@ -43,6 +45,8 @@ fs.readFile(__filename, 'utf8', function (err, src) {
  * @param d {Number}
  * @return {Number} overall result
  */
+start:  5
+end:    13
 ```
 ## Installation
 
@@ -60,7 +64,11 @@ fs.readFile(__filename, 'utf8', function (err, src) {
  * @function
  * @param src {String} the JavaScript source
  * @param lineno {Number} the number where the function is located (1 based)
- * @return {String} comment or empty if none was found
+ * @return {Object} { 
+ *    comment   :  comment string or empty if none was found
+ *    startline :  line on which the comment starts or 0 if no comment was found
+ *    endline   :  line on which the comment ends or 0 if no comment was found
+ *  }
  */
  ```
 
