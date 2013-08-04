@@ -24,6 +24,9 @@ function grabEntireComment (comment, lines, startlineIndexedComments) {
   // only called for single line comments
   var endline = comment.loc.end.line;
   var startline = comment.loc.start.line;
+  console.error('startline: ', startline);
+  console.error('endline: ', endline);
+  
 
   for (var peek = startline - 1; peek > 0; peek--) {
     // accept other single line comments
@@ -39,7 +42,8 @@ function grabEntireComment (comment, lines, startlineIndexedComments) {
     break;
   }
 
-  return { startline: startline, endline: endline, comment: lines.slice(startline, endline + 1).join('\n') };
+  // since we added a wrapper line at the top, we need to adjust linenos down by one
+  return { startline: startline - 1, endline: endline - 1, comment: lines.slice(startline, endline + 1).join('\n') };
 }
 
 function commentEndLine (lines, lineno) {
@@ -94,10 +98,9 @@ var go = module.exports = function (src, lineno) {
 if (!module.parent) {
 
   var fs = require('fs');
-  var src = fs.readFileSync(__dirname + '/test/fixtures/block-comment-multi.js', 'utf8');
-  var lineno = 13;
+  var src = fs.readFileSync(__dirname + '/../replpad/test/fixtures/function-with-jsdoc.js', 'utf8');
+  var lineno = 12;
 
   var ast  =  parse(src, { comment: true, range: true, loc: true });
   go(src, lineno)
-
 }
