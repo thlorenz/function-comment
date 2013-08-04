@@ -24,9 +24,6 @@ function grabEntireComment (comment, lines, startlineIndexedComments) {
   // only called for single line comments
   var endline = comment.loc.end.line;
   var startline = comment.loc.start.line;
-  console.error('startline: ', startline);
-  console.error('endline: ', endline);
-  
 
   for (var peek = startline - 1; peek > 0; peek--) {
     // accept other single line comments
