@@ -5,7 +5,7 @@
 Given some JavaScript and the line on which a function is defined it returns comments and jsdocs found right above that function.
 
 ```js
-var findex = require('findex');
+var functionComment = require('function-comment');
 var fs = require('fs');
 
 /**
@@ -27,7 +27,7 @@ var lineno = 13;
 fs.readFile(__filename, 'utf8', function (err, src) {
   if (err) return console.error(err);
   
-  var res = findex(src, lineno);
+  var res = functionComment(src, lineno);
   console.log(res.comment);
   console.log('start: ', res.startline);
   console.log('end:   ', res.endline);
@@ -54,7 +54,7 @@ end:    13
 
 ## API
 
-### *findex (src, lineno)*
+### *functionComment (src, lineno)*
 
 ```
 /**

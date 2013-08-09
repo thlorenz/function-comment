@@ -1,4 +1,4 @@
-var findex = require('../');
+var functionComment = require('../');
 var fs = require('fs');
 
 /**
@@ -20,7 +20,7 @@ var lineno = 13;
 fs.readFile(__filename, 'utf8', function (err, src) {
   if (err) return console.error(err);
   
-  var res = findex(src, lineno);
+  var res = functionComment(src, lineno);
   console.log(res.comment);
   console.log('start: ', res.startline);
   console.log('end:   ', res.endline);

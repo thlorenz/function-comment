@@ -79,7 +79,7 @@ var go = module.exports = function (src, lineno) {
   var endline  =  commentEndLine(lines, lineno);
 
   // no comment related to the function found?
-  if (endline < 1) return '';
+  if (endline < 1) return { comment: '', startline: 0, endline: 0 };
 
   var startlineIndexedComments = indexCommentsByStartLine(ast.comments);
   var endlineIndexedComments = indexCommentsByEndLine(ast.comments);
