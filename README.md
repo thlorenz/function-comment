@@ -58,7 +58,7 @@ end:    13
 
 ```
 /**
- * Finds any concecutive comment above the given line of code in the source.
+ * Finds any consecutive comment above the given line of code in the source.
  *
  * @name exports
  * @function
